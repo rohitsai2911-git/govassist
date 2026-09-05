@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GovAssist — Indian Government Scheme Finder</title>
+<meta name="description" content="Ask questions about Indian government schemes and get answers grounded in the official documents you upload, with exact page citations.">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="10" fill="%2316A34A"/><path d="M10 22V12l6-4 6 4v10h-4v-6h-4v6z" fill="%23FAF6EF"/></svg>'>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/index.css">
+<style>
+:root{
+  --paper:#FAF5EC;
+  --paper-deep:#F3ECDD;
+  --card:#FFFDF7;
+  --ink:#1C1917;
+  --ink-soft:#6B6459;
+  --line:#E6DDCB;
+  --green:#16A34A;
+  --green-soft:#DCF3E3;
+  --blue:#2563EB;
+  --blue-soft:#E3ECFD;
+  --red:#DC2626;
+  --red-soft:#FCE5E4;
+  --yellow:#EAB308;
+  --yellow-soft:#FBF0C8;
+  --r-card:32px;
+  --r-big:44px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Inter",-apple-system,"Segoe UI",sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+a{color:inherit}
+
+/* ---------- nav ---------- */
+nav{position:sticky;top:16px;z-index:50;padding:0 20px}
+.nav-pill{
+  max-width:1200px;margin:0 auto;height:68px;
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:999px;
+  display:flex;align-items:center;gap:30px;
+  padding:0 12px 0 26px;
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:18px;letter-spacing:-.03em;text-decoration:none}
+.brand svg{flex:none}
+.nav-links{display:flex;gap:26px;margin-left:auto;font-size:15px;font-weight:500;color:var(--ink-soft)}
+.nav-links a{text-decoration:none;transition:color .18s}
+.nav-links a:hover{color:var(--ink)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:999px;text-decoration:none;font-weight:700;
+  transition:transform .15s,filter .18s;
+}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#052E16;padding:12px 26px;font-size:15px}
+.btn-green:hover{filter:brightness(1.08)}
+.btn-ink{background:var(--ink);color:#fff;padding:15px 30px;font-size:16.5px}
+.btn-ink:hover{filter:brightness(1.25)}
+.btn-ghost{border:2px solid var(--ink);color:var(--ink);padding:13px 28px;font-size:16.5px;background:transparent}
+.btn-ghost:hover{background:var(--ink);color:var(--paper)}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:8px}
+
+/* ---------- hero ---------- */
+.hero{padding:84px 0 110px}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center}
+h1{
+  font-size:clamp(46px,6.4vw,86px);
+  line-height:.98;letter-spacing:-.045em;font-weight:800;
+}
+h1 .hl{color:var(--green)}
+.hero p.sub{margin-top:26px;font-size:19px;color:var(--ink-soft);max-width:42ch;font-weight:450}
+.hero-cta{margin-top:38px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+
+/* paper-cut illustration */
+.art{position:relative;min-height:440px}
+.art svg{width:100%;height:auto;display:block}
+.float{animation:floaty 5.5s ease-in-out infinite}
+.float.d1{animation-delay:-1.8s}
+.float.d2{animation-delay:-3.4s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+
+/* ---------- section scaffolding ---------- */
+section{padding:104px 0}
+.sec-head{max-width:640px}
+h2{font-size:clamp(34px,4.4vw,56px);line-height:1.02;letter-spacing:-.04em;font-weight:800}
+h2 .hl{color:var(--green)}
+.sec-head p{margin-top:18px;font-size:17.5px;color:var(--ink-soft)}
+
+/* ---------- pipeline ---------- */
+.pipe{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pcard{
+  background:var(--card);border:1.5px solid var(--line);
+  border-radius:var(--r-card);padding:30px 30px 28px;
+  transition:transform .2s,border-color .2s;
+}
+.pcard:hover{transform:translateY(-4px);border-color:#CBBFA4}
+.pcard .chip{
+  width:52px;height:52px;border-radius:18px;
+  display:grid;place-items:center;
+  font-weight:800;font-size:17px;letter-spacing:-.02em;
+}
+.c-green{background:var(--green-soft);color:var(--green)}
+.c-blue{background:var(--blue-soft);color:var(--blue)}
+.c-red{background:var(--red-soft);color:var(--red)}
+.c-yellow{background:var(--yellow-soft);color:#A16207}
+.pcard h3{margin-top:20px;font-size:19px;letter-spacing:-.02em;font-weight:700}
+.pcard p{margin-top:8px;font-size:14.8px;color:var(--ink-soft)}
+.honesty{
+  margin-top:26px;border-radius:var(--r-card);
+  background:var(--ink);color:#F5F1E8;
+  padding:30px 34px;font-size:16.5px;max-width:none;
+}
+.honesty strong{color:#86EFAC}
+
+/* ---------- sources ---------- */
+.srcs{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.scard{
+  background:var(--card);border:1.5px solid var(--line);
+  border-radius:var(--r-card);padding:30px;
+  display:flex;flex-direction:column;gap:10px;
+  transition:transform .2s,border-color .2s;
+}
+.scard:hover{transform:translateY(-4px);border-color:#CBBFA4}
+.scard.w6{grid-column:span 2;flex-direction:row;align-items:center;gap:34px}
+.scard .icon{width:56px;height:56px;border-radius:20px;flex:none;display:grid;place-items:center}
+.scard h3{font-size:20px;letter-spacing:-.02em;font-weight:700}
+.scard p{font-size:14.8px;color:var(--ink-soft)}
+.scard a{
+  margin-top:6px;font-weight:700;font-size:14.5px;color:#166534;
+  text-decoration:none;width:fit-content;
+}
+.scard a:hover{text-decoration:underline}
+.pib{
+  margin-top:22px;border-radius:999px;border:2px dashed #D6C9A8;
+  padding:16px 30px;font-size:15px;color:var(--ink-soft);width:fit-content;max-width:100%;
+}
+.pib a{color:#166534;font-weight:700;text-decoration:none}
+.pib a:hover{text-decoration:underline}
+
+/* ---------- rules ---------- */
+.rules{margin-top:64px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.rule{border-radius:var(--r-big);padding:44px 42px}
+.rule-a{background:var(--green-soft);border:2px solid #B5DFC2}
+.rule-b{background:var(--card);border:1.5px solid var(--line)}
+.rule .num{
+  display:inline-block;padding:7px 18px;border-radius:999px;
+  background:var(--paper);border:1.5px solid var(--line);
+  font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+}
+.rule-a .num{border-color:#B5DFC2;color:var(--green)}
+.rule h3{margin-top:22px;font-size:27px;letter-spacing:-.03em;font-weight:800}
+.rule p{margin-top:12px;color:var(--ink-soft);font-size:16px;max-width:44ch}
+.rule code{
+  display:inline-block;margin-top:20px;padding:11px 20px;border-radius:16px;
+  background:var(--ink);color:#A7F3D0;
+  font-family:ui-monospace,Menlo,monospace;font-size:14px;
+}
+
+/* ---------- principles ---------- */
+.principles{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pr{
+  border-radius:var(--r-card);padding:34px 32px;border:1.5px solid var(--line);
+}
+.pr-a{background:var(--blue-soft);border-color:#C4D6F8}
+.pr-b{background:var(--yellow-soft);border-color:#EAD9A0}
+.pr-c{background:var(--red-soft);border-color:#F3C4C3}
+.pr h3{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.pr p{margin-top:10px;font-size:15px;color:#57534E}
+
+/* ---------- run ---------- */
+.run{margin-top:64px;border-radius:var(--r-big);overflow:hidden;background:var(--ink);color:#F5F1E8}
+.run-bar{display:flex;align-items:center;gap:8px;padding:20px 30px 0}
+.run-bar i{width:12px;height:12px;border-radius:50%;display:block}
+.run-bar i:nth-child(1){background:#F87171}
+.run-bar i:nth-child(2){background:#FBBF24}
+.run-bar i:nth-child(3){background:#34D399}
+.run-body{padding:26px 34px 38px;font-family:ui-monospace,Menlo,monospace;font-size:15px;line-height:2.15}
+.cmt{color:#8B8578}
+.p{color:#86EFAC}
+.cmd{white-space:pre}
+.run-note{margin-top:24px;font-size:15.5px;color:var(--ink-soft)}
+.run-note a{color:#4ADE80;font-weight:700;text-decoration:none}
+.run-note a:hover{text-decoration:underline}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:var(--paper-deep);padding:2px 8px;border-radius:8px}
+
+/* ---------- footer ---------- */
+footer{padding:40px 0 80px}
+.disc{
+  background:var(--card);border:1.5px solid var(--line);
+  border-radius:var(--r-card);padding:28px 34px;
+  color:var(--ink-soft);font-size:15.5px;max-width:820px;
+}
+.foot-row{
+  margin-top:40px;display:flex;justify-content:space-between;align-items:center;
+  color:var(--ink-soft);font-size:14.5px;flex-wrap:wrap;gap:14px;
+}
+.foot-row a{color:var(--ink);font-weight:600;text-decoration:none}
+.foot-row a:hover{color:var(--green)}
+
+/* ---------- motion ---------- */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .float{animation:none}
+}
+
+/* ---------- responsive ---------- */
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:52px}
+  .art{min-height:0;max-width:480px}
+  .pipe{grid-template-columns:1fr 1fr}
+  .srcs{grid-template-columns:1fr 1fr}
+  .scard.w6{grid-column:span 2;flex-direction:column;align-items:flex-start;gap:14px}
+  .rules{grid-template-columns:1fr}
+  .principles{grid-template-columns:1fr}
+  h1{font-size:clamp(42px,9vw,64px)}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .pipe,.srcs{grid-template-columns:1fr}
+  .scard.w6{grid-column:span 1}
+  section{padding:76px 0}
+  .hero{padding:56px 0 80px}
+  .nav-pill{height:60px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-pill">
+    <a class="brand" href="#">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#16A34A"/><path d="M10 22V12l6-4 6 4v10h-4v-6h-4v6z" fill="#FAF5EC"/></svg>
+      GovAssist
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#sources">Documents</a>
+      <a href="#rules">Rules</a>
+      <a href="#run">Run</a>
+    </div>
+    <a class="btn btn-green" href="http://localhost:8501">Launch App</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Ask anything.<br>Cite <span class="hl">everything.</span></h1>
+      <p class="sub">GovAssist reads the government scheme PDFs you provide and answers your questions with exact file and page citations.</p>
+      <div class="hero-cta">
+        <a class="btn btn-ink" href="http://localhost:8501">Launch App</a>
+        <a class="btn btn-ghost" href="#how">How it works</a>
+      </div>
+    </div>
+    <div class="art" aria-hidden="true">
+      <!-- paper-cut scene: document under a magnifier, citation bubble, sparkles -->
+      <svg viewBox="0 0 560 500" fill="none">
+        <!-- back paper -->
+        <g class="float d2">
+          <rect x="70" y="60" width="240" height="310" rx="26" fill="#F3ECDD" stroke="#E6DDCB" stroke-width="3" transform="rotate(-7 190 215)"/>
+        </g>
+        <!-- main document -->
+        <g class="float">
+          <rect x="130" y="90" width="250" height="330" rx="28" fill="#FFFDF7" stroke="#1C1917" stroke-width="4"/>
+          <rect x="130" y="90" width="250" height="74" rx="28" fill="#16A34A"/>
+          <rect x="130" y="138" width="250" height="26" fill="#16A34A"/>
+          <rect x="158" y="118" width="150" height="16" rx="8" fill="#FAF5EC"/>
+          <rect x="160" y="196" width="190" height="12" rx="6" fill="#E6DDCB"/>
+          <rect x="160" y="226" width="190" height="12" rx="6" fill="#E6DDCB"/>
+          <rect x="160" y="256" width="150" height="12" rx="6" fill="#E6DDCB"/>
+          <rect x="160" y="300" width="120" height="34" rx="17" fill="#E3ECFD"/>
+          <rect x="160" y="352" width="190" height="12" rx="6" fill="#E6DDCB"/>
+          <rect x="160" y="382" width="130" height="12" rx="6" fill="#E6DDCB"/>
+          <!-- bookmark -->
+          <path d="M336 90h44v86l-22-18-22 18z" fill="#DC2626"/>
+        </g>
+        <!-- magnifier -->
+        <g class="float d1">
+          <circle cx="392" cy="300" r="64" fill="#DCF3E3" stroke="#1C1917" stroke-width="6"/>
+          <circle cx="392" cy="300" r="64" fill="none" stroke="#16A34A" stroke-width="6" stroke-dasharray="20 14" stroke-linecap="round"/>
+          <line x1="438" y1="348" x2="486" y2="398" stroke="#1C1917" stroke-width="14" stroke-linecap="round"/>
+          <path d="M368 300h48M392 276v48" stroke="#16A34A" stroke-width="7" stroke-linecap="round"/>
+        </g>
+        <!-- citation bubble -->
+        <g class="float d2">
+          <rect x="330" y="52" width="196" height="76" rx="34" fill="#2563EB"/>
+          <text x="356" y="88" font-family="Inter, sans-serif" font-weight="800" font-size="21" fill="#fff">stand_up_</text>
+          <text x="356" y="112" font-family="Inter, sans-serif" font-weight="800" font-size="21" fill="#BFDBFE">india.pdf · p.3</text>
+          <path d="M368 128l-14 26 40-26z" fill="#2563EB"/>
+        </g>
+        <!-- sparkles -->
+        <path d="M84 130l7 18 18 7-18 7-7 18-7-18-18-7 18-7z" fill="#EAB308"/>
+        <path d="M508 210l5 13 13 5-13 5-5 13-5-13-13-5 13-5z" fill="#16A34A"/>
+        <circle cx="70" cy="330" r="10" fill="#DC2626" opacity=".85"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>From PDF to a <span class="hl">cited answer</span>, in six small steps.</h2>
+      <p>Every question follows the same transparent path. Nothing reaches the model unless retrieval finds it first.</p>
+    </div>
+    <div class="pipe reveal">
+      <div class="pcard">
+        <div class="chip c-green">01</div>
+        <h3>Upload PDFs</h3>
+        <p>Official scheme guidelines land in data/schemes or through the in-app uploader.</p>
+      </div>
+      <div class="pcard">
+        <div class="chip c-blue">02</div>
+        <h3>Extract and chunk</h3>
+        <p>pypdf reads each page, split into overlapping chunks so nothing is cut mid-sentence.</p>
+      </div>
+      <div class="pcard">
+        <div class="chip c-red">03</div>
+        <h3>Embed</h3>
+        <p>Every chunk becomes a vector with OpenAI embeddings, meaning captured as numbers.</p>
+      </div>
+      <div class="pcard">
+        <div class="chip c-yellow">04</div>
+        <h3>Index locally</h3>
+        <p>Vectors live in ChromaDB with file and page metadata attached to each one.</p>
+      </div>
+      <div class="pcard">
+        <div class="chip c-blue">05</div>
+        <h3>Retrieve</h3>
+        <p>Your question finds its closest passages, ranked by similarity and filtered for quality.</p>
+      </div>
+      <div class="pcard">
+        <div class="chip c-green">06</div>
+        <h3>Cited answer</h3>
+        <p>The model answers only from those passages and names the exact document and page.</p>
+      </div>
+    </div>
+    <div class="honesty reveal">
+      <strong>The honesty rule:</strong> if retrieval finds nothing relevant above the similarity threshold, GovAssist tells you outright instead of guessing. The model never sees a whole document, only the handful of passages that matched.
+    </div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Feed it <span class="hl">real documents.</span></h2>
+      <p>Download official scheme guidelines from these public sources. Everything listed is free and published by the government itself.</p>
+    </div>
+    <div class="srcs reveal">
+      <div class="scard w6">
+        <div class="icon" style="background:var(--green-soft)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </div>
+        <div>
+          <h3>MyScheme</h3>
+          <p>Search across thousands of central and state schemes by category, beneficiary, or ministry. Open any scheme and look for its Documents or Guidelines PDF link.</p>
+          <a href="https://www.myscheme.gov.in" target="_blank" rel="noopener">myscheme.gov.in</a>
+        </div>
+      </div>
+      <div class="scard">
+        <div class="icon" style="background:var(--blue-soft)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M4 15h15"/></svg>
+        </div>
+        <h3>Education Ministry</h3>
+        <p>Scholarship guidelines and National Scholarship Portal documentation.</p>
+        <a href="https://www.education.gov.in/en/scholarships-education-loan-0" target="_blank" rel="noopener">education.gov.in</a>
+      </div>
+      <div class="scard">
+        <div class="icon" style="background:var(--yellow-soft)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#A16207" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
+        </div>
+        <h3>MSME and MUDRA</h3>
+        <p>Stand-Up India, PM MUDRA and other business support schemes.</p>
+        <a href="https://www.mudra.org.in" target="_blank" rel="noopener">mudra.org.in</a>
+      </div>
+      <div class="scard">
+        <div class="icon" style="background:var(--red-soft)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a9 9 0 1 0 9 9"/><path d="M12 2v9l6 6"/></svg>
+        </div>
+        <h3>Agriculture Ministry</h3>
+        <p>PM-KISAN plus crop, insurance and welfare scheme circulars.</p>
+        <a href="https://pmkisan.gov.in" target="_blank" rel="noopener">pmkisan.gov.in</a>
+      </div>
+      <div class="scard">
+        <div class="icon" style="background:var(--green-soft)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+        </div>
+        <h3>India.gov.in</h3>
+        <p>The national portal indexes schemes across every ministry and department.</p>
+        <a href="https://www.india.gov.in/topics/social-development/schemes" target="_blank" rel="noopener">india.gov.in</a>
+      </div>
+      <div class="scard w6">
+        <div class="icon" style="background:var(--blue-soft)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        </div>
+        <div>
+          <h3>Your state portal</h3>
+          <p>State welfare departments host their own scholarship and assistance PDFs, for example Karnataka's SSP scholarship portal. Pair a central scheme with your state's version for sharper answers.</p>
+          <a href="https://www.india.gov.in/states-uts" target="_blank" rel="noopener">Find your state portal</a>
+        </div>
+      </div>
+    </div>
+    <p class="pib reveal">Shortcut: Press Information Bureau documents at <a href="https://static.pib.gov.in" target="_blank" rel="noopener">static.pib.gov.in</a> are consistently text-based and download cleanly.</p>
+  </div>
+</section>
+
+<section id="rules">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Two rules before <span class="hl">you upload.</span></h2>
+    </div>
+    <div class="rules reveal">
+      <div class="rule rule-a">
+        <span class="num">Rule 01</span>
+        <h3>Text-based PDFs only</h3>
+        <p>Open the file and try selecting a sentence with your cursor. If you cannot select or copy text, it is a scan, and ingestion will reject it. OCR is out of scope by design.</p>
+      </div>
+      <div class="rule rule-b">
+        <span class="num">Rule 02</span>
+        <h3>Name files descriptively</h3>
+        <p>The filename becomes the scheme name shown in every citation, so make it readable at a glance.</p>
+        <code>pm_kisan_guidelines.pdf</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Why trust <span class="hl">the answer?</span></h2>
+    </div>
+    <div class="principles reveal">
+      <div class="pr pr-a">
+        <h3>Only your documents</h3>
+        <p>The model has no outside knowledge of schemes. What you upload is the entire universe it can speak about.</p>
+      </div>
+      <div class="pr pr-b">
+        <h3>Page-level citations</h3>
+        <p>Every answer lists the exact document and page it drew from, pulled from real retrieval metadata.</p>
+      </div>
+      <div class="pr pr-c">
+        <h3>Admits what it lacks</h3>
+        <p>If the passages do not cover your question, GovAssist says so plainly instead of inventing eligibility criteria.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="run">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Run it locally in <span class="hl">three commands.</span></h2>
+    </div>
+    <div class="run reveal">
+      <div class="run-bar"><i></i><i></i><i></i></div>
+      <div class="run-body">
+<div class="cmd"><span class="cmt"># install dependencies</span>
+<span class="p">$</span> pip install -r requirements.txt
+
+<span class="cmt"># add your API key, then index your PDFs</span>
+<span class="p">$</span> cp .env.example .env && python ingest.py
+
+<span class="cmt"># start asking questions</span>
+<span class="p">$</span> streamlit run app.py</div>
+      </div>
+    </div>
+    <p class="run-note reveal">Needs an <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">OpenAI API key</a> in <span class="mono">.env</span>. Works through any OpenAI-compatible provider too.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disc">GovAssist provides information from the uploaded documents and should not be treated as official government advice. Always verify current eligibility and application details with the relevant government authority.</p>
+    <div class="foot-row">
+      <span>Built with Streamlit, ChromaDB and LangChain.</span>
+      <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
+},{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

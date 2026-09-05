@@ -1,0 +1,14 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Serve static website + Streamlit app together
+# Website on port 8080, Streamlit on port 8501
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+# Start both servers
+CMD sh -c "python -m http.server 8080 --directory website & streamlit run app.py --server.port 8501 --server.headless true"

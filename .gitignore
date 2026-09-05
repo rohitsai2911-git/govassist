@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+venv/
+.venv/
+chroma_db/
+http.log
+http.err
+web.log
+streamlit.log
+serve.py
